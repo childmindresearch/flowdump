@@ -18,14 +18,12 @@ VERSION_WORKFLOW = 1
 def workflow_container(workflow: Any, meta: Any = None) -> Dict[str, Any]:
     """Construct a container dictionary with some version information to allow version checks when reading.
 
-    Parameters.
-    ----------
-    workflow : Workflow object.
-    meta : Meta information.
+    Args:
+        workflow: Workflow object.
+        meta: Meta information.
 
     Returns:
-    -------
-    dict
+        Container dictionary.
     """
     return {
         "version": {"workflow": VERSION_WORKFLOW, "nipype": version_nipype},

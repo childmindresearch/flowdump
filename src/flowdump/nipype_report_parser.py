@@ -22,13 +22,11 @@ rx_star_item = r"^\*\s(\S+)\s:\s(.*)$"
 def _lex_report_rst(line_stream: Iterable[str]) -> List[Tuple[str, str]]:
     """Lex NiPype report.rst data into tokens.
 
-    Parameters
-    ----------
-    line_stream : Iterable of lines from report.rst
+    Args:
+        line_stream: Iterable of lines from report.rst
 
     Returns:
-    -------
-    List of tuples (token_name, token_value)
+        List of tuples (token_name, token_value)
     """
     tokens: List[Tuple[str, str]] = []
 
@@ -94,13 +92,11 @@ def _parse_report_rst(
 ) -> Dict[str, Dict[str, str]]:
     """Parse token stream into nested dictionary.
 
-    Parameters
-    ----------
-    token_stream : Iterable of tuples (token_name, token_value)
+    Args:
+        token_stream: Iterable of tuples (token_name, token_value)
 
     Returns:
-    -------
-    Nested dictionary of sections and key-value pairs.
+        Nested dictionary of sections and key-value pairs.
     """
     document: Dict[str, Dict[str, str]] = {}
     section: Dict[str, str] = {}
@@ -127,13 +123,11 @@ def read_report_rst_str(report_rst: str) -> Dict[str, Dict[str, str]]:
     NiPypes RST 'dialect' does not work with any RST library I could find.
     For anyone tempted to make this better: Don't waste your time.
 
-    Parameters
-    ----------
-    report_rst : report.rst as string.
+    Args:
+        report_rst: report.rst as string.
 
     Returns:
-    -------
-    Nested dictionary of sections and key-value pairs.
+        Nested dictionary of sections and key-value pairs.
     """
     lines = report_rst.splitlines(True)
     tokens = _lex_report_rst(lines)
@@ -148,13 +142,11 @@ def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]
     NiPypes RST 'dialect' does not work with any RST library I could find.
     For anyone tempted to make this better: Don't waste your time.
 
-    Parameters
-    ----------
-    filename : Filepath to report.rst
+    Args:
+        filename: Filepath to report.rst
 
     Returns:
-    -------
-    Nested dictionary of sections and key-value pairs.
+        Nested dictionary of sections and key-value pairs.
     """
 
     def _stream_file_lines(

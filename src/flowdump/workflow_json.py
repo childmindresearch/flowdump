@@ -31,13 +31,11 @@ def _object_as_strdict(obj: object) -> Dict[str, str]:
 def _serialize_inout(obj: object) -> object:
     """Simple recursive string serialization for NiPype node input and output arguments.
 
-    Parameters
-    ----------
-    obj : The object to serialize.
+    Args:
+        obj: The object to serialize.
 
     Returns:
-    -------
-    The serialized object.
+        The serialized object.
     """
     if isinstance(obj, dict):
         return {str(k): _serialize_inout(v) for k, v in obj.items()}
@@ -220,13 +218,12 @@ def save_workflow_json(
 ) -> None:
     """Serialize and save workflow object to a file.
 
-    Parameters.
-    ----------
-    filename : Filename to save to.
-    workflow : Workflow object.
-    meta : Meta information. meta.stage has to be 'post' to trigger post-execution data serialization.
-    custom_serializer : Optional function to convert custom node input and output data types.
-        First argument is the internal serialization function, second any given object.
+    Args:
+        filename: Filename to save to.
+        workflow: Workflow object.
+        meta: Meta information. meta.stage has to be 'post' to trigger post-execution data serialization.
+        custom_serializer: Optional function to convert custom node input and output data types.
+            First argument is the internal serialization function, second any given object.
     """
     obj = _save_workflow_json(workflow, meta, custom_serializer)
     with open(filename, "w", encoding="utf-8") as file:
@@ -240,12 +237,11 @@ def save_workflow_json_string(
 ) -> str:
     """Serialize and save workflow object to a file.
 
-    Parameters.
-    ----------
-    workflow : Workflow object.
-    meta : Meta information. meta.stage has to be 'post' to trigger post-execution data serialization.
-    custom_serializer : Optional function to convert custom node input and output data types.
-        First argument is the internal serialization function, second any given object.
+    Args:
+        workflow : Workflow object.
+        meta : Meta information. meta.stage has to be 'post' to trigger post-execution data serialization.
+        custom_serializer : Optional function to convert custom node input and output data types.
+            First argument is the internal serialization function, second any given object.
     """
     obj = _save_workflow_json(workflow, meta, custom_serializer)
     return json.dumps(obj, indent=2, cls=WorkflowJSONEncoder)
