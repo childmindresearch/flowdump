@@ -2,7 +2,7 @@
 name = "flowdump"
 version = "0.1.2"
 description = "NiPype-1 workflow serializer."
-authors = [ "Florian Rupprecht <florian.rupprecht@childmind.org>" ]
+authors = ["Florian Rupprecht <florian.rupprecht@childmind.org>"]
 license = "LGPL-2.1"
 readme = "README.md"
 packages = [{include = "flowdump", from = "src"}]

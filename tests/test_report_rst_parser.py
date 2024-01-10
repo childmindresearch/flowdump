@@ -64,21 +64,21 @@ Terminal output
 ~~~~~~~~~~~~~~~
 
 
- 
+
 
 
 Terminal - standard output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
- 
+
 
 
 Terminal - standard error
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
- 
+
 
 
 Environment
@@ -87,17 +87,17 @@ Environment
 
 * ANTSPATH : /usr/lib/ants
 * C3DPATH : /opt/c3d
-* FIX_VERTEX_AREA : 
+* FIX_VERTEX_AREA :
 * FREESURFER_HOME : /usr/lib/freesurfer
 * FSFAST_HOME : /usr/lib/freesurfer/fsfast
 * FSF_OUTPUT_FORMAT : nii.gz
 * FSLBROWSER : /etc/alternatives/x-www-browser
 * FSLDIR : /usr/share/fsl/5.0
-* FSLLOCKDIR : 
-* FSLMACHINELIST : 
+* FSLLOCKDIR :
+* FSLMACHINELIST :
 * FSLMULTIFILEQUIT : TRUE
 * FSLOUTPUTTYPE : NIFTI_GZ
-* FSLREMOTECALL : 
+* FSLREMOTECALL :
 * FSLTCLSH : /usr/bin/tclsh
 * FSLWISH : /usr/bin/wish
 * FSL_BIN : /usr/share/fsl/5.0/bin

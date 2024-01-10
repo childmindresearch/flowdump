@@ -92,7 +92,7 @@ def _lex_report_rst(line_stream: Iterable[str]):
 
 
 def _parse_report_rst(
-    token_stream: Iterable[Tuple[str, str]]
+    token_stream: Iterable[Tuple[str, str]],
 ) -> Dict[str, Dict[str, str]]:
     """
     Parse token stream into nested dictionary.
@@ -162,7 +162,7 @@ def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]
     """
 
     def _stream_file_lines(
-        filename: Union[str, PathLike]
+        filename: Union[str, PathLike],
     ) -> Generator[str, None, None]:
         with open(filename, encoding="utf8") as file:
             while True:

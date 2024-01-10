@@ -83,8 +83,8 @@ save_workflow_json(
 ### Custom field serialization
 
 Custom serializers can be implemented for projects with custom NiPype Node types.
-The serializer is a function that takes a the default `flowdump` serializer 
-function (to optionally fall back to) and an object and returns a JSON-serializable 
+The serializer is a function that takes a the default `flowdump` serializer
+function (to optionally fall back to) and an object and returns a JSON-serializable
 object.
 
 ```Python
