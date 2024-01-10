@@ -77,7 +77,7 @@ def test_workflow_from_scratch() -> None:
         interface=nio.DataGrabber(infields=["subject_id"], outfields=["func"]),
         name="datasource",
     )
-    datasource.inputs.base_directory = os.path.abspath(".")  # Changed from 'data' (has to exist)
+    datasource.inputs.base_directory = os.path.abspath("..")  # Changed from 'data' (has to exist)
     datasource.inputs.template = "%s/%s.nii"
     datasource.inputs.template_args = dict(func=[["subject_id", ["f3", "f5", "f7", "f10"]]])
     datasource.inputs.subject_id = "s1"
