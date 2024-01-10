@@ -2,31 +2,32 @@
 name = "flowdump"
 version = "0.1.2"
 description = "NiPype-1 workflow serializer."
-authors = [ "Florian Rupprecht <floruppr@gmail.com>" ]
+authors = [ "Florian Rupprecht <florian.rupprecht@childmind.org>" ]
 license = "LGPL-2.1"
 readme = "README.md"
+packages = [{include = "flowdump", from = "src"}]
 
-  [[tool.poetry.packages]]
-  include = "flowdump"
-  from = "src"
-
-  [tool.poetry.dependencies]
-  python = ">=3.8"
-  nipype = ">=1.0.0, <2.0.0"
+[tool.poetry.dependencies]
+python = ">=3.8"
+nipype = ">=1.0.0, <2.0.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.3.2"
-mypy = "^1.4.0"
+pytest = "^7.4.4"
+mypy = "^1.7.1"
+pre-commit = "^3.5.0"
 pytest-cov = "^4.1.0"
+ruff = "^0.1.11"
 
 [tool.poetry.group.docs.dependencies]
-pdoc = "^14.0.0"
-
-  [tool.poetry.extras]
-  docs = [ "pdoc" ]
+pdoc = "^14.3.0"
 
 [tool.pytest.ini_options]
-pythonpath = [ "src" ]
+pythonpath = [
+  "src"
+]
+testpaths = [
+  "tests"
+]
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -57,28 +58,31 @@ exclude = [
 ]
 line-length = 88
 indent-width = 4
-src = [ "src" ]
+src = ["src"]
 target-version = "py311"
 
-  [tool.ruff.lint]
-  select = [ "ANN", "D", "E", "F", "I" ]
-  ignore = [ "ANN101", "ANN102" ]
-  fixable = [ "ALL" ]
-  unfixable = [ ]
-  dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+[tool.ruff.lint]
+select = ["ANN", "D", "E", "F", "I"]
+ignore = [
+  "ANN101",  # self should not be annotated.
+  "ANN102"  # cls should not be annotated.
+]
+fixable = ["ALL"]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
-  [tool.ruff.format]
-  quote-style = "double"
-  indent-style = "space"
-  skip-magic-trailing-comma = false
-  line-ending = "auto"
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
 
-  [tool.ruff.pydocstyle]
-  convention = "google"
+[tool.ruff.pydocstyle]
+convention = "google"
 
-  [tool.ruff.per-file-ignores]
-  "tests/**/*.py" = [ ]
+[tool.ruff.per-file-ignores]
+"tests/**/*.py" = []
 
 [build-system]
-requires = [ "poetry-core>=1.2.0" ]
+requires = ["poetry-core>=1.2.0"]
 build-backend = "poetry.core.masonry.api"
