@@ -1,3 +1,5 @@
+"""Parse NiPype report.rst files."""
+
 import re
 from abc import ABC
 from os import PathLike
@@ -5,6 +7,8 @@ from typing import Dict, Generator, Iterable, List, Tuple, Union
 
 
 class ReportSection(ABC):
+    """Enum for NiPype report.rst sections."""
+
     EXECUTION_INPUTS = "Execution Inputs"
     EXECUTION_OUTPUTS = "Execution Outputs"
     EXECUTION_INFO = "Runtime info"
@@ -15,19 +19,17 @@ class ReportSection(ABC):
 rx_star_item = r"^\*\s(\S+)\s:\s(.*)$"
 
 
-def _lex_report_rst(line_stream: Iterable[str]):
-    """
-    Lex NiPype report.rst data into tokens.
+def _lex_report_rst(line_stream: Iterable[str]) -> List[Tuple[str, str]]:
+    """Lex NiPype report.rst data into tokens.
 
     Parameters
     ----------
     line_stream : Iterable of lines from report.rst
 
-    Returns
+    Returns:
     -------
     List of tuples (token_name, token_value)
     """
-
     tokens: List[Tuple[str, str]] = []
 
     line = ""
@@ -45,11 +47,7 @@ def _lex_report_rst(line_stream: Iterable[str]):
         # Headings
         # More efficient with this order of expressions
         # noinspection PyChainedComparisons
-        if (
-            len(line) > 3
-            and line[0] in ("=", "-", "~")
-            and line.count(line[0]) == len(line)
-        ):
+        if len(line) > 3 and line[0] in ("=", "-", "~") and line.count(line[0]) == len(line):
             tokens.append(("header" + line[0], last_line))
             skip = 2
             continue
@@ -94,14 +92,13 @@ def _lex_report_rst(line_stream: Iterable[str]):
 def _parse_report_rst(
     token_stream: Iterable[Tuple[str, str]],
 ) -> Dict[str, Dict[str, str]]:
-    """
-    Parse token stream into nested dictionary.
+    """Parse token stream into nested dictionary.
 
     Parameters
     ----------
     token_stream : Iterable of tuples (token_name, token_value)
 
-    Returns
+    Returns:
     -------
     Nested dictionary of sections and key-value pairs.
     """
@@ -125,8 +122,8 @@ def _parse_report_rst(
 
 
 def read_report_rst_str(report_rst: str) -> Dict[str, Dict[str, str]]:
-    """
-    Read NiPype report.rst data.
+    """Read NiPype report.rst data.
+
     NiPypes RST 'dialect' does not work with any RST library I could find.
     For anyone tempted to make this better: Don't waste your time.
 
@@ -134,11 +131,10 @@ def read_report_rst_str(report_rst: str) -> Dict[str, Dict[str, str]]:
     ----------
     report_rst : report.rst as string.
 
-    Returns
+    Returns:
     -------
     Nested dictionary of sections and key-value pairs.
     """
-
     lines = report_rst.splitlines(True)
     tokens = _lex_report_rst(lines)
     document = _parse_report_rst(tokens)
@@ -147,8 +143,8 @@ def read_report_rst_str(report_rst: str) -> Dict[str, Dict[str, str]]:
 
 
 def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]:
-    """
-    Read NiPype report.rst data.
+    """Read NiPype report.rst data.
+
     NiPypes RST 'dialect' does not work with any RST library I could find.
     For anyone tempted to make this better: Don't waste your time.
 
@@ -156,7 +152,7 @@ def read_report_rst(filename: Union[str, PathLike]) -> Dict[str, Dict[str, str]]
     ----------
     filename : Filepath to report.rst
 
-    Returns
+    Returns:
     -------
     Nested dictionary of sections and key-value pairs.
     """

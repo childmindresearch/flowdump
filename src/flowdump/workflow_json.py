@@ -1,10 +1,12 @@
+"""Workflow JSON serialization."""
+
 import dataclasses
 import json
 import pathlib as pl
 from dataclasses import dataclass
 from datetime import date, datetime
 from os import PathLike
-from typing import Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 
 import networkx
 from nipype.interfaces.base.support import Bunch
@@ -16,9 +18,7 @@ from .nipype_report_parser import ReportSection, read_report_rst
 
 
 def _object_as_strdict(obj: object) -> Dict[str, str]:
-    """
-    Extracts and converts all fields of an object to a {str: str} dict.
-    """
+    """Extracts and converts all fields of an object to a {str: str} dict."""
     if isinstance(obj, dict):
         obj_dict = obj
     elif hasattr(obj, "__dict__"):
@@ -29,14 +29,13 @@ def _object_as_strdict(obj: object) -> Dict[str, str]:
 
 
 def _serialize_inout(obj: object) -> object:
-    """
-    Simple recursive string serialization for NiPype node input and output arguments.
+    """Simple recursive string serialization for NiPype node input and output arguments.
 
     Parameters
     ----------
     obj : The object to serialize.
 
-    Returns
+    Returns:
     -------
     The serialized object.
     """
@@ -65,9 +64,7 @@ def _workflow_get_graph(wf: WorkflowRaw) -> networkx.DiGraph:
 
 
 def _node_get_wd_path(node: NodeRaw) -> pl.Path:
-    """
-    Get working directory path for a given node.
-    """
+    """Get working directory path for a given node."""
     return pl.Path(node.output_dir())  # noqa
 
 
@@ -107,9 +104,8 @@ class NodeData:
     edges: List["EdgeData"] = dataclasses.field(default_factory=lambda: [])
 
     @classmethod
-    def from_obj(
-        cls, obj, serializer: Callable[[object], object], serialze_postex: bool = True
-    ):
+    def from_obj(cls, obj: Any, serializer: Callable[[object], object], serialze_postex: bool = True) -> "NodeData":
+        """Serialize a workflow object to a NodeData object."""
         if isinstance(obj, (NodeRaw, WorkflowRaw)):
             node_data = cls(
                 name=obj.name,
@@ -142,15 +138,9 @@ class NodeData:
                 report_path = wd_path / "_report" / "report.rst"
                 if report_path.exists():
                     report_data = read_report_rst(report_path)
-                    node_data.result.inputs = report_data.get(
-                        ReportSection.EXECUTION_INPUTS, {}
-                    )
-                    node_data.result.outputs = report_data.get(
-                        ReportSection.EXECUTION_OUTPUTS, {}
-                    )
-                    node_data.result.runtime_info = report_data.get(
-                        ReportSection.EXECUTION_INFO, {}
-                    )
+                    node_data.result.inputs = report_data.get(ReportSection.EXECUTION_INPUTS, {})
+                    node_data.result.outputs = report_data.get(ReportSection.EXECUTION_OUTPUTS, {})
+                    node_data.result.runtime_info = report_data.get(ReportSection.EXECUTION_INFO, {})
                 else:
                     node_data.result.read_success = False
 
@@ -164,9 +154,7 @@ class NodeData:
         graph = _workflow_get_graph(obj) if isinstance(obj, WorkflowRaw) else obj
 
         for child_node in graph.nodes:
-            node_data_child = cls.from_obj(
-                child_node, serialze_postex=serialze_postex, serializer=serializer
-            )
+            node_data_child = cls.from_obj(child_node, serialze_postex=serialze_postex, serializer=serializer)
             node_data.nodes.append(node_data_child)
 
         for child_edge in graph.edges:
@@ -191,12 +179,10 @@ class WorkflowJSONMeta:
 
     pipeline_name: str
     stage: str
-    time: datetime = dataclasses.field(
-        default_factory=lambda: datetime.now().astimezone()
-    )
+    time: datetime = dataclasses.field(default_factory=lambda: datetime.now().astimezone())
 
     def filename(self) -> str:
-        """Generate filename from fields"""
+        """Generate filename from fields."""
         timestamp = self.time.strftime("%Y-%m-%d_%H-%M-%S")
         return f"workflow_{self.stage}_{timestamp}_{self.pipeline_name}.json"
 
@@ -204,7 +190,8 @@ class WorkflowJSONMeta:
 class WorkflowJSONEncoder(json.JSONEncoder):
     """Custom JSON encoder. Unpacks dataclasses to dicts."""
 
-    def default(self, o):
+    def default(self, o):  # noqa: ANN001, ANN201
+        """Override default method."""
         if dataclasses.is_dataclass(o):
             return dataclasses.asdict(o)
         if isinstance(o, (datetime, date)):
@@ -215,15 +202,11 @@ class WorkflowJSONEncoder(json.JSONEncoder):
 def _save_workflow_json(
     workflow: WorkflowRaw,
     meta: WorkflowJSONMeta,
-    custom_serializer: Optional[
-        Callable[[Callable[[object], object], object], object]
-    ] = None,
-):
+    custom_serializer: Optional[Callable[[Callable[[object], object], object], object]] = None,
+) -> Dict[str, Any]:
     node_data = NodeData.from_obj(
         workflow,
-        serializer=_serialize_inout
-        if custom_serializer is None
-        else lambda o: custom_serializer(_serialize_inout, o),  # type: ignore
+        serializer=_serialize_inout if custom_serializer is None else lambda o: custom_serializer(_serialize_inout, o),  # type: ignore
         serialze_postex=meta.stage == "post",
     )
     return workflow_container(workflow=node_data, meta=meta)
@@ -233,13 +216,11 @@ def save_workflow_json(
     filename: Union[str, PathLike],
     workflow: WorkflowRaw,
     meta: WorkflowJSONMeta,
-    custom_serializer: Optional[
-        Callable[[Callable[[object], object], object], object]
-    ] = None,
+    custom_serializer: Optional[Callable[[Callable[[object], object], object], object]] = None,
 ) -> None:
-    """
-    Serialize and save workflow object to a file.
-    Parameters
+    """Serialize and save workflow object to a file.
+
+    Parameters.
     ----------
     filename : Filename to save to.
     workflow : Workflow object.
@@ -255,13 +236,11 @@ def save_workflow_json(
 def save_workflow_json_string(
     workflow: WorkflowRaw,
     meta: WorkflowJSONMeta,
-    custom_serializer: Optional[
-        Callable[[Callable[[object], object], object], object]
-    ] = None,
+    custom_serializer: Optional[Callable[[Callable[[object], object], object], object]] = None,
 ) -> str:
-    """
-    Serialize and save workflow object to a file.
-    Parameters
+    """Serialize and save workflow object to a file.
+
+    Parameters.
     ----------
     workflow : Workflow object.
     meta : Meta information. meta.stage has to be 'post' to trigger post-execution data serialization.

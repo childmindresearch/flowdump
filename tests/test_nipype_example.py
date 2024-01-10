@@ -1,12 +1,13 @@
+"""Test dumping example from NiPype documentation."""
+
 # From: https://nipype.readthedocs.io/en/1.8.6/users/examples/workflow_from_scratch.html
 import json
 
 from flowdump.workflow_json import WorkflowJSONMeta, save_workflow_json_string
 
 
-def test_workflow_from_scratch():
+def test_workflow_from_scratch() -> None:
     """Test 'workflow from scratch' example from NiPype documentation."""
-
     import os  # system functions
     from builtins import range
 
@@ -45,9 +46,7 @@ def test_workflow_from_scratch():
     level1estimate = pe.Node(interface=spm.EstimateModel(), name="level1estimate")
     level1estimate.inputs.estimation_method = {"Classical": 1}
 
-    contrastestimate = pe.Node(
-        interface=spm.EstimateContrast(), name="contrastestimate"
-    )
+    contrastestimate = pe.Node(interface=spm.EstimateContrast(), name="contrastestimate")
     cont1 = ("Task>Baseline", "T", ["Task-Odd", "Task-Even"], [0.5, 0.5])
     cont2 = ("Task-Odd>Task-Even", "T", ["Task-Odd", "Task-Even"], [1, -1])
     contrastestimate.inputs.contrasts = [cont1, cont2]
@@ -57,9 +56,7 @@ def test_workflow_from_scratch():
     modelling.connect(level1design, "spm_mat_file", level1estimate, "spm_mat_file")
     modelling.connect(level1estimate, "spm_mat_file", contrastestimate, "spm_mat_file")
     modelling.connect(level1estimate, "beta_images", contrastestimate, "beta_images")
-    modelling.connect(
-        level1estimate, "residual_image", contrastestimate, "residual_image"
-    )
+    modelling.connect(level1estimate, "residual_image", contrastestimate, "residual_image")
 
     main_workflow = pe.Workflow(name="main_workflow")
     main_workflow.base_dir = "workflow_from_scratch"
@@ -80,13 +77,9 @@ def test_workflow_from_scratch():
         interface=nio.DataGrabber(infields=["subject_id"], outfields=["func"]),
         name="datasource",
     )
-    datasource.inputs.base_directory = os.path.abspath(
-        "."
-    )  # Changed from 'data' (has to exist)
+    datasource.inputs.base_directory = os.path.abspath(".")  # Changed from 'data' (has to exist)
     datasource.inputs.template = "%s/%s.nii"
-    datasource.inputs.template_args = dict(
-        func=[["subject_id", ["f3", "f5", "f7", "f10"]]]
-    )
+    datasource.inputs.template_args = dict(func=[["subject_id", ["f3", "f5", "f7", "f10"]]])
     datasource.inputs.subject_id = "s1"
     datasource.inputs.sort_filelist = True
 
@@ -95,15 +88,6 @@ def test_workflow_from_scratch():
     datasink = pe.Node(interface=nio.DataSink(), name="datasink")
     datasink.inputs.base_directory = os.path.abspath("workflow_from_scratch/output")
 
-    main_workflow.connect(
-        modelling, "contrastestimate.spmT_images", datasink, "contrasts.@T"
-    )
+    main_workflow.connect(modelling, "contrastestimate.spmT_images", datasink, "contrasts.@T")
 
-    assert (
-        json.loads(
-            save_workflow_json_string(
-                main_workflow, meta=WorkflowJSONMeta("Main", "pre")
-            )
-        )
-        is not None
-    )
+    assert json.loads(save_workflow_json_string(main_workflow, meta=WorkflowJSONMeta("Main", "pre"))) is not None

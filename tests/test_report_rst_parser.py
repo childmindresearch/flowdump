@@ -1,5 +1,8 @@
-from flowdump.nipype_report_parser import read_report_rst_str, ReportSection
+"""Test parsing of report.rst file."""
 
+from flowdump.nipype_report_parser import ReportSection, read_report_rst_str
+
+# ruff: noqa: E501
 EXAMPLE_REPORT_RST = """Node: desc-sm_falff_zstd_290 (z_score_std (z_score (fsl)
 ========================================================
 
@@ -140,7 +143,7 @@ Environment
 """
 
 
-def test_report_rst_parsing():
+def test_report_rst_parsing() -> None:
     """Test parsing of report.rst file."""
     document = read_report_rst_str(EXAMPLE_REPORT_RST)
 

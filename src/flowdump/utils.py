@@ -1,3 +1,5 @@
+"""Utility functions for flowdump."""
+
 import pathlib as pl
 from os import PathLike
 from typing import Callable, Optional, Union
@@ -10,12 +12,9 @@ def run_and_save_workflow(
     workflow: WorkflowRaw,
     out_dir: Union[PathLike, str],
     workflow_name: Optional[str] = None,
-    custom_serializer: Optional[
-        Callable[[Callable[[object], object], object], object]
-    ] = None,
+    custom_serializer: Optional[Callable[[Callable[[object], object], object], object]] = None,
 ) -> None:
-    """
-    Run a workflow and save the results to a directory.
+    """Run a workflow and save the results to a directory.
 
     Parameters
     ----------
@@ -26,11 +25,10 @@ def run_and_save_workflow(
         Accepts a function that takes the default flowdump serializer and an object and
         returns the serialized object.
 
-    Returns
+    Returns:
     -------
     None
     """
-
     out_dir = pl.Path(out_dir)
     workflow_name = "Workflow" if workflow_name is None else workflow_name
 
