@@ -1,12 +1,12 @@
 # `flowdump`
 
-[![Build](https://github.com/cmi-dair/flowdump/actions/workflows/test.yaml/badge.svg?branch=main)](https://github.com/cmi-dair/flowdump/actions/workflows/test.yaml?query=branch%3Amain)
-[![codecov](https://codecov.io/gh/cmi-dair/flowdump/branch/main/graph/badge.svg?token=22HWWFWPW5)](https://codecov.io/gh/cmi-dair/flowdump)
+[![Build](https://github.com/childmindresearch/flowdump/actions/workflows/test.yaml/badge.svg?branch=main)](https://github.com/childmindresearch/flowdump/actions/workflows/test.yaml?query=branch%3Amain)
+[![codecov](https://codecov.io/gh/childmindresearch/flowdump/branch/main/graph/badge.svg?token=22HWWFWPW5)](https://codecov.io/gh/childmindresearch/flowdump)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![L-GPL License](https://img.shields.io/badge/license-L--GPL-blue.svg)](LICENSE)
-[![pages](https://img.shields.io/badge/api-docs-blue)](https://cmi-dair.github.io/flowdump)
+[![pages](https://img.shields.io/badge/api-docs-blue)](https://childmindresearch.github.io/flowdump)
 
-NiPype-1 workflow serializer for use with [`flowview`](https://cmi-dair.github.io/flowview/).
+NiPype-1 workflow serializer for use with [`flowview`](https://childmindresearch.github.io/flowview/).
 
 ## Installation
 
